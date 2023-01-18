@@ -21,15 +21,24 @@ export default {
 };
 
 export const CustomHeader: React.VFC = () => {
-    const { cols, getCellContent } = useMockDataGenerator(1000, true, true);
+    const { cols, getCellContent, onColumnResize } = useMockDataGenerator(1000, true, true);
 
     const drawHeader: DrawHeaderCallback = React.useCallback(args => {
         const { ctx, rect } = args;
-        ctx.rect(rect.x, rect.y, rect.width, rect.height);
-        const lg = ctx.createLinearGradient(0, rect.y, 0, rect.y + rect.height);
-        lg.addColorStop(0, "#ff00d934");
-        lg.addColorStop(1, "#00a2ff34");
-        ctx.fillStyle = lg;
+
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        const width = rect.x + rect.width;
+        console.log(rect.height / 2);
+        ctx.beginPath();
+        ctx.moveTo(width - 10, rect.height / 2 + 36);
+        ctx.lineTo(width - 20, rect.height / 2 + 36);
+        ctx.lineTo(width - 15, rect.height / 2 + 45);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(width - 10, rect.height / 2 + 32);
+        ctx.lineTo(width - 20, rect.height / 2 + 32);
+        ctx.lineTo(width - 15, rect.height / 2 + 22);
         ctx.fill();
         return false;
     }, []);
@@ -38,6 +47,7 @@ export const CustomHeader: React.VFC = () => {
         <DataEditor
             {...defaultProps}
             getCellContent={getCellContent}
+            onColumnResize={onColumnResize}
             columns={cols}
             drawHeader={drawHeader}
             rows={3000}
